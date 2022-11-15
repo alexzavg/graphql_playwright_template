@@ -17,7 +17,7 @@ producerId: "60b8bc31956abb0009efb4d0" }){ name price} }`;
 const deleteTea = (teaID) => `mutation { deleteTea(id: "${teaID}") }`;
 
 
-test.only('should be able to list all teas', async ({ request }) => {
+test('should be able to list all teas', async ({ request }) => {
     const response = await request.post('/', {
         data: {
             query: allTeas
