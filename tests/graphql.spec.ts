@@ -27,7 +27,7 @@ test.describe.serial('GRAPHQL DEMO', async () => {
         console.log("\nNew tea ID:", teaID);
     });
     
-    test('should delete newly added tea', async ({ request }) => {
+    test('should delete newly added tea', async () => {
         await graphQlService.deleteTea(teaID);
     });
 
