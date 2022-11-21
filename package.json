@@ -11,11 +11,11 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.16.3",
-    "prettyjson": "^1.2.5",
-    "faker": "^5.5.3",
     "chalk": "^4.1.2",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
+    "faker": "^5.5.3",
+    "prettyjson": "^1.2.5",
     "typescript": "^4.7.4"
   }
 }
