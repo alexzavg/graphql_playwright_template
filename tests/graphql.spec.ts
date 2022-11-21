@@ -8,7 +8,7 @@ var prettyjson = require('prettyjson');
 // variables
 const newTea = faker.random.word();
 const teaPrice = faker.finance.amount();
-let teaID = "";
+let teaID: string;
 
 // graphql queries
 const allTeas = "{ teas { id, name} }";
@@ -28,28 +28,25 @@ test.describe.serial('GRAPHQL DEMO', async () => {
             }
         });
 
-        expect(response.ok()).toBeTruthy();
+        expect(response.status()).toBe(200);
 
-        let respText = await response.text();
-        const respJson = JSON.parse(respText);
+        const respJson = await response.json();
     
-        console.log(color.response('\nHeaders\n'), color.info(prettyjson.render(response.headers())));
-        console.log(color.response('\nStatus text\n'), color.info(prettyjson.render(response.statusText())));
-        console.log(color.response('\nText\n'), color.info(prettyjson.render(respJson)));
-        console.log(color.response('\nUrl\n'), color.info(prettyjson.render(response.url())));
+        console.log(color.response('\nResponse: \n'), color.info(prettyjson.render(respJson)));
     });
     
-    test.only('should be able to add a new tea', async ({ request }) => {
+    test('should be able to add a new tea', async ({ request }) => {
         const response = await request.post('/', {
             data: {
                 query: addTea(newTea, teaPrice)
             }
         });
 
-        expect(response.ok()).toBeTruthy();
         expect(response.status()).toBe(200);
 
-        console.log('added a new tea: ', (await response.body()).toString());
+        const respJson = await response.json();
+        
+        console.log('\nResponse: \n', color.info(prettyjson.render(respJson)));
     });
     
     test('should be able to get new tea by name', async ({ request }) => {
@@ -59,13 +56,12 @@ test.describe.serial('GRAPHQL DEMO', async () => {
             }
         });
 
-        const jsonResponse = await response.json();
+        const respJson = await response.json();
     
-        expect(response.ok()).toBeTruthy();
         expect(response.status()).toBe(200);
-        expect(JSON.stringify(jsonResponse)).toContain(newTea);
+        expect(JSON.stringify(respJson)).toContain(newTea);
 
-        console.log(prettyjson.render(jsonResponse));
+        console.log('\nResponse: \n', color.info(prettyjson.render(respJson)));
     });
     
     test('should be able to verify that added tea is now added to the list of all teas', async ({ request }) => {
@@ -75,17 +71,18 @@ test.describe.serial('GRAPHQL DEMO', async () => {
             }
         });
 
-        const jsonResponse = await response.json();
+        const respJson = await response.json();
     
-        const teaObj = jsonResponse.data.teas.find(obj => {
+        const teaObj = respJson.data.teas.find(obj => {
             return obj.name === newTea;
         });
 
         teaID = teaObj['id'];
 
-        expect(response.ok()).toBeTruthy();
         expect(response.status()).toBe(200);
-        expect(JSON.stringify(jsonResponse)).toContain(newTea);
+        expect(JSON.stringify(respJson)).toContain(newTea);
+
+        console.log('\nResponse: \n', color.info(prettyjson.render(respJson)));
     });
     
     
@@ -97,13 +94,12 @@ test.describe.serial('GRAPHQL DEMO', async () => {
             }
         });
     
-        const jsonResponse = await response.json();
+        const respJson = await response.json();
     
-        console.log('response', (await response.body()).toString());
-
-        expect(response.ok()).toBeTruthy();
         expect(response.status()).toBe(200);
-        expect(jsonResponse.data.deleteTea).toBeTruthy();
+        expect(respJson.data.deleteTea).toBe(true);
+
+        console.log('\nResponse: \n', color.info(prettyjson.render(respJson)));
     });
 
 });
