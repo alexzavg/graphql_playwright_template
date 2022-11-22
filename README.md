@@ -1,4 +1,4 @@
-# Demo video https://youtu.be/SBPbjdXjT8A
+# Demo video https://youtu.be/AnNrW1RZsY8
 
 # Setup
 ## Mac
